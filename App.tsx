@@ -4,22 +4,20 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as SQLite from "expo-sqlite";
 import * as React from "react";
 import { StyleSheet, TouchableOpacity } from "react-native";
-
+import * as Constants from "./constants/constant"
 import { Add, Edit, Home, Settings, ViewItem } from "./views";
 
 const { useEffect } = React;
 
-const db = SQLite.openDatabase("db.db");
+const db = SQLite.openDatabase(Constants.DATABASE_FILE_NAME);
 
 const Stack = createStackNavigator();
 
 export default function App(props: any) {
 
   useEffect(() => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        "create table if not exists journal (id integer primary key not null, postdate text, first text, firstDesc text, second text, secondDesc text, third text, thirdDesc text, fourth text, fourthDesc text, fifth text, fifthDesc fifth);"
-      );
+    db.transaction((tx:SQLite.SQLTransaction) => {
+      tx.executeSql( Constants.CREATE_JOURNAL_TABLE );
     });
   }, []);
 

@@ -1,5 +1,6 @@
 import * as SQLite from "expo-sqlite";
 import * as React from "react";
+import * as Constants from "../../constants/constant"
 import {
   Alert,
   Modal,
@@ -14,7 +15,7 @@ import { Terms } from "./Terms";
 
 const { useState } = React;
 
-const db = SQLite.openDatabase("db.db");
+const db = SQLite.openDatabase(Constants.DATABASE_FILE_NAME);
 
 const Settings = () => {
   const [showModal, setShowModal] = useState(false);
@@ -29,7 +30,7 @@ const Settings = () => {
     Alert.alert("Cleared Database!");
     setShowModal(false);
     db.transaction((tx) => {
-      tx.executeSql(`delete from journal`);
+      tx.executeSql( Constants.DELETE_JOURNAL_ALL );
     });
   };
 

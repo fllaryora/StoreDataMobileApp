@@ -1,10 +1,10 @@
 import * as SQLite from "expo-sqlite";
 import * as React from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
+import * as Constants from "../../constants/constant"
 const { useState, useEffect } = React;
 
-const db = SQLite.openDatabase("db.db");
+const db = SQLite.openDatabase(Constants.DATABASE_FILE_NAME);
 
 const Home = (props: any) => {
   const [entries, setEntries] = useState([]);
@@ -15,7 +15,7 @@ const Home = (props: any) => {
   useEffect(() => {
     const interval = setInterval(() => {
       db.transaction((tx) => {
-        tx.executeSql("select * from journal", [], (_, res) => {
+        tx.executeSql(Constants.SELECT_JOURNAL, [], (_, res) => {
           let rows: any = res.rows;
           setEntries(rows["_array"]);
         });

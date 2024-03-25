@@ -9,9 +9,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
+import * as Constants from "../../constants/constant"
 const { useState } = React;
-const db = SQLite.openDatabase("db.db");
+const db = SQLite.openDatabase(Constants.DATABASE_FILE_NAME);
 
 const ViewItem = (props: any) => {
   const [modalVisible, setModalVisibility] = useState(false);
@@ -44,7 +44,7 @@ const ViewItem = (props: any) => {
 
     db.transaction(
       (tx) => {
-        tx.executeSql(`delete from journal where id = ?;`, [id]);
+        tx.executeSql(Constants.DELETE_JOURNAL_BY_ID, [id]);
       },
       undefined,
       undefined

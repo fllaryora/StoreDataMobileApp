@@ -1,5 +1,6 @@
 import * as SQLite from "expo-sqlite";
 import * as React from "react";
+import * as Constants from "../../constants/constant"
 import {
   Alert,
   ScrollView,
@@ -12,7 +13,7 @@ import {
 
 const { useState } = React;
 
-const db = SQLite.openDatabase("db.db");
+const db = SQLite.openDatabase(Constants.DATABASE_FILE_NAME);
 
 const Add = (props: any) => {
   const { navigation } = props;
@@ -39,9 +40,8 @@ const Add = (props: any) => {
       return false;
     }
     db.transaction(
-      (tx) => {
-        tx.executeSql(
-          "insert into journal (postdate, first, firstDesc, second, secondDesc, third, thirdDesc, fourth, fourthDesc, fifth, fifthDesc) values (?,?,?,?,?,?,?,?,?,?,?)",
+      (tx :SQLite.SQLTransaction) => {
+        tx.executeSql(Constants.INSERT_JOURNAL,
           [
             new Date().toDateString(),
             first,

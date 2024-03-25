@@ -1,5 +1,6 @@
 import * as SQLite from "expo-sqlite";
 import * as React from "react";
+import * as Constants from "../../constants/constant"
 import {
   Alert,
   ScrollView,
@@ -11,7 +12,7 @@ import {
 } from "react-native";
 
 const { useState } = React;
-const db = SQLite.openDatabase("db.db");
+const db = SQLite.openDatabase(Constants.DATABASE_FILE_NAME);
 
 const Edit = (props: any) => {
   const { navigation, route } = props;
@@ -55,44 +56,44 @@ const Edit = (props: any) => {
       return false;
     }
     db.transaction(
-      (tx) => {
-        tx.executeSql(`update journal set first = ? where id = ?`, [
+      (tx:SQLite.SQLTransaction) => {
+        tx.executeSql(Constants.UPDATE_FIRST_FROM_JOURNAL_BY_ID, [
           newFirst,
           id,
         ]);
-        tx.executeSql(`update journal set firstDesc = ? where id = ?`, [
+        tx.executeSql(Constants.UPDATE_FIRSTDESC_FROM_JOURNAL_BY_ID, [
           newFirstDesc,
           id,
         ]);
-        tx.executeSql(`update journal set second = ? where id = ?`, [
+        tx.executeSql(Constants.UPDATE_SECOND_FROM_JOURNAL_BY_ID, [
           newSecond,
           id,
         ]);
-        tx.executeSql(`update journal set secondDesc = ? where id = ?`, [
+        tx.executeSql(Constants.UPDATE_SECONDDESC_FROM_JOURNAL_BY_ID, [
           newSecondDesc,
           id,
         ]);
-        tx.executeSql(`update journal set third = ? where id = ?`, [
+        tx.executeSql(Constants.UPDATE_THIRD_FROM_JOURNAL_BY_ID, [
           newThird,
           id,
         ]);
-        tx.executeSql(`update journal set thirdDesc = ? where id = ?`, [
+        tx.executeSql(Constants.UPDATE_THIRDDESC_FROM_JOURNAL_BY_ID, [
           newThirdDesc,
           id,
         ]);
-        tx.executeSql(`update journal set fourth = ? where id = ?`, [
+        tx.executeSql(Constants.UPDATE_FOURTH_FROM_JOURNAL_BY_ID, [
           newFourth,
           id,
         ]);
-        tx.executeSql(`update journal set fourthDesc = ? where id = ?`, [
+        tx.executeSql(Constants.UPDATE_FOURTHDESC_FROM_JOURNAL_BY_ID, [
           newFourthDesc,
           id,
         ]);
-        tx.executeSql(`update journal set fifth = ? where id = ?`, [
+        tx.executeSql(Constants.UPDATE_FIFTH_FROM_JOURNAL_BY_ID, [
           newFifth,
           id,
         ]);
-        tx.executeSql(`update journal set fifthDesc = ? where id = ?`, [
+        tx.executeSql(Constants.UPDATE_FIFTHDESC_FROM_JOURNAL_BY_ID, [
           newFifthDesc,
           id,
         ]);
