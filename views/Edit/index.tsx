@@ -11,58 +11,94 @@ import {
 } from "react-native";
 
 const { useState } = React;
-
 const db = SQLite.openDatabase("db.db");
 
-const Add = (props: any) => {
-  const { navigation } = props;
-  const [first, setFirst] = useState("");
-  const [firstDesc, setFirstDesc] = useState("");
-  const [second, setSecond] = useState("");
-  const [secondDesc, setSecondDesc] = useState("");
-  const [third, setThird] = useState("");
-  const [thirdDesc, setThirdDesc] = useState("");
-  const [fourth, setFourth] = useState("");
-  const [fourthDesc, setFourthDesc] = useState("");
-  const [fifth, setFifth] = useState("");
-  const [fifthDesc, setFifthDesc] = useState("");
+const Edit = (props: any) => {
+  const { navigation, route } = props;
 
-  const add = () => {
+  let data = route.params?.data;
+  const {
+    id,
+    postdate,
+    first,
+    firstDesc,
+    second,
+    secondDesc,
+    third,
+    thirdDesc,
+    fourth,
+    fourthDesc,
+    fifth,
+    fifthDesc,
+  } = data;
+
+  const [newFirst, setFirst] = useState(first);
+  const [newFirstDesc, setFirstDesc] = useState(firstDesc);
+  const [newSecond, setSecond] = useState(second);
+  const [newSecondDesc, setSecondDesc] = useState(secondDesc);
+  const [newThird, setThird] = useState(third);
+  const [newThirdDesc, setThirdDesc] = useState(thirdDesc);
+  const [newFourth, setFourth] = useState(fourth);
+  const [newFourthDesc, setFourthDesc] = useState(fourthDesc);
+  const [newFifth, setFifth] = useState(fifth);
+  const [newFifthDesc, setFifthDesc] = useState(fifthDesc);
+
+  const update = () => {
     if (
-      first === null ||
-      first === "" ||
-      second === "" ||
-      second === null ||
-      third === "" ||
-      third === null
+      newFirst === null ||
+      newFirst === "" ||
+      newSecond === null ||
+      newSecond === "" ||
+      newThird === null ||
+      newThird === ""
     ) {
       return false;
     }
     db.transaction(
       (tx) => {
-        tx.executeSql(
-          "insert into journal (postdate, first, firstDesc, second, secondDesc, third, thirdDesc, fourth, fourthDesc, fifth, fifthDesc) values (?,?,?,?,?,?,?,?,?,?,?)",
-          [
-            new Date().toDateString(),
-            first,
-            firstDesc,
-            second,
-            secondDesc,
-            third,
-            thirdDesc,
-            fourth,
-            fourthDesc,
-            fifth,
-            fifthDesc,
-          ]
-        );
+        tx.executeSql(`update journal set first = ? where id = ?`, [
+          newFirst,
+          id,
+        ]);
+        tx.executeSql(`update journal set firstDesc = ? where id = ?`, [
+          newFirstDesc,
+          id,
+        ]);
+        tx.executeSql(`update journal set second = ? where id = ?`, [
+          newSecond,
+          id,
+        ]);
+        tx.executeSql(`update journal set secondDesc = ? where id = ?`, [
+          newSecondDesc,
+          id,
+        ]);
+        tx.executeSql(`update journal set third = ? where id = ?`, [
+          newThird,
+          id,
+        ]);
+        tx.executeSql(`update journal set thirdDesc = ? where id = ?`, [
+          newThirdDesc,
+          id,
+        ]);
+        tx.executeSql(`update journal set fourth = ? where id = ?`, [
+          newFourth,
+          id,
+        ]);
+        tx.executeSql(`update journal set fourthDesc = ? where id = ?`, [
+          newFourthDesc,
+          id,
+        ]);
+        tx.executeSql(`update journal set fifth = ? where id = ?`, [
+          newFifth,
+          id,
+        ]);
+        tx.executeSql(`update journal set fifthDesc = ? where id = ?`, [
+          newFifthDesc,
+          id,
+        ]);
       },
-      (e) => {
-        console.log("Failed addition", e.message);
-      },
-      () => {
-        console.log("Successful addition");
-      }
+      undefined,
+      undefined
     );
     return true;
   };
@@ -76,7 +112,7 @@ const Add = (props: any) => {
           style={input}
           onChangeText={(val) => setFirst(val)}
           placeholder={"First value"}
-          value={first}
+          value={newFirst}
           multiline
         />
       </View>
@@ -86,7 +122,7 @@ const Add = (props: any) => {
           style={input}
           onChangeText={(val) => setFirstDesc(val)}
           placeholder={"First value description *Optional"}
-          value={firstDesc}
+          value={newFirstDesc}
           multiline
         />
       </View>
@@ -97,7 +133,7 @@ const Add = (props: any) => {
           onChangeText={(val) => setSecond(val)}
           placeholder={"Second value"}
           multiline
-          value={second}
+          value={newSecond}
         />
       </View>
       <View style={formGroup}>
@@ -107,7 +143,7 @@ const Add = (props: any) => {
           onChangeText={(val) => setSecondDesc(val)}
           multiline
           placeholder={"Second value description *Optional"}
-          value={secondDesc}
+          value={newSecondDesc}
         />
       </View>
       <View style={formGroup}>
@@ -117,7 +153,7 @@ const Add = (props: any) => {
           onChangeText={(val) => setThird(val)}
           multiline
           placeholder={"Third value"}
-          value={third}
+          value={newThird}
         />
       </View>
       <View style={formGroup}>
@@ -127,7 +163,7 @@ const Add = (props: any) => {
           multiline
           onChangeText={(val) => setThirdDesc(val)}
           placeholder={"Third value description *Optional"}
-          value={thirdDesc}
+          value={newThirdDesc}
         />
       </View>
       <View style={formGroup}>
@@ -137,7 +173,7 @@ const Add = (props: any) => {
           style={input}
           onChangeText={(val) => setFourth(val)}
           placeholder={"Fourth value"}
-          value={fourth}
+          value={newFourth}
         />
       </View>
       <View style={formGroup}>
@@ -147,7 +183,7 @@ const Add = (props: any) => {
           onChangeText={(val) => setFourthDesc(val)}
           multiline
           placeholder={"Fourth value description *Optional"}
-          value={fourthDesc}
+          value={newFourthDesc}
         />
       </View>
       <View style={formGroup}>
@@ -157,7 +193,7 @@ const Add = (props: any) => {
           onChangeText={(val) => setFifth(val)}
           placeholder={"Fifth value"}
           multiline
-          value={fifth}
+          value={newFifth}
         />
       </View>
       <View style={formGroup}>
@@ -167,23 +203,23 @@ const Add = (props: any) => {
           onChangeText={(val) => setFifthDesc(val)}
           placeholder={"Fifth value description *Optional"}
           multiline
-          value={fifthDesc}
+          value={newFifthDesc}
         />
       </View>
       <TouchableOpacity
         style={button}
         onPress={() => {
-          if (add()) {
+          if (update()) {
             navigation.popToTop();
           } else {
             Alert.alert(
-              "Add unsuccessful! Make sure at least three items are added!"
+              "Failed to update! Make sure at least three items are added!"
             );
           }
         }}
       >
         <Text style={{ textAlign: "center", fontSize: 16, color: "#3C6074" }}>
-          Add
+          Save
         </Text>
       </TouchableOpacity>
     </ScrollView>
@@ -193,8 +229,8 @@ const Add = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 10,
     backgroundColor: "#fff",
+    paddingHorizontal: 10,
   },
   label: {
     textAlign: "center",
@@ -225,5 +261,4 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
-export { Add };
+export { Edit };
